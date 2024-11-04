@@ -17,8 +17,6 @@ function queryDM() {
         'x-verification-code': String(code)
     });
 
-    //const request = [number, code]
-
     const requestOptions = {
     method: "GET",
     headers: myHeaders,

@@ -16,10 +16,6 @@ app.use(cors({
 
 app.get('/api/voucher', async (req, res) => {
     try {
-        console.log(req.headers)
-        // console.log("Req0", req.headers['x-printed-credit-key'])
-        // console.log("Req0", req.headers['x-verification-code'])
-
         const response = await axios.get('https://dmpay-gateway.services.dmtech.com/checker/DE/credits', {
             headers: {
                 'x-printed-credit-key': req.headers['x-printed-credit-key'],
