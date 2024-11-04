@@ -1,0 +1,14 @@
+#version: '3.8'
+services:
+  selenium-app:
+    build: .
+    volumes:
+      - .:/app  # Bindet das aktuelle Verzeichnis in den Container
+    environment:
+      - DISPLAY=:98
+    ports:
+      - "5001:5001"  # Exponiere den Port für den Zugriff auf die Anwendung
+    command: >
+      /bin/bash -c "Xvfb :99 -screen 0 1024x768x16 & python app.py"
+    stdin_open: true  # Aktiviert das Standard-Eingabe-Feld für Interaktion
+    tty: true  # Aktiviert TTY-Modus

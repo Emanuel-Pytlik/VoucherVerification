@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- let's import our stylesheet (found in public/css/styles.css)-->
+    <link rel="stylesheet" type="text/css" href="/css/styles.css" />
+  </head>
+
+  <!-- you can also specify styles straight in html! Let's use Verdana on this page.-->
+  <body style="font-family: Verdana">
+    <header
+      style="background-color: #e5e5e5; padding: 15px; text-align: center"
+    >
+      <h1>Voucer Verification</h1>
+    </header>
+
+    <div class="calculator" style="padding: 20px;">
+      <strong>Select your supermarket:</strong>
+      <br>
+      <input type="checkbox" id="rewe" name="rewe">Rewe</input><br>
+      <input type="checkbox" id="edeka" name="edeka">Edeka</input><br>
+      <input type="checkbox" id="lidl" name="lidl">Lidl</input><br>      
+      <input type="checkbox" id="dm" name="dm">DM</input><br>
+      <input type="checkbox" id="aldi" name="aldi">Aldi</input><br>
+      <br>
+      <strong>Card Number:</strong> 
+      <br>
+      <input type="text" id="number" name="number">
+      <br><br>
+      <strong>Code:</strong> 
+      <br>
+      <input type="text" id="code" name="code">
+      <br><br>
+      <strong>Captcha:</strong> 
+      <br>
+      <input type="text" id="captcha" name="captcha">
+      <br><br>
+      <button id="btn"><strong>Check Voucer!</strong></button>
+    </div>
+      <br>
+    
+    <html>
+      <body onload="calculateTimes()">
+        <div id="target" style="display: none; padding: 20px;">Loading...</div>
+        <script id="template" type="x-tmpl-mustache">
+          <table class="table" id="table">
+            <tr>
+              <th>Status</th>
+              <th>Value</th>
+              <th>Currency</th>
+            </tr>
+            <tr>
+              <td>{{ status }}</td>
+              <td>{{ value }}</td>
+              <td>{{ currency }}</td>            
+          </table>
+        </script>
+
+        <script src="https://unpkg.com/mustache@latest"></script>
+        <script src="script.js"></script>
+      </body>
+    </html>
+
+    <script src="script.js"></script>
+  </body>
+</html>

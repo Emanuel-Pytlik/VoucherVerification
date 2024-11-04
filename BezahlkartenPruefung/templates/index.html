@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gutscheinprüfung</title>
+</head>
+<body>
+    <h1>Gutscheinprüfung</h1>
+
+    <form method="POST" action="/">
+        <label for="supermarket">Supermarkt:</label>
+        <select id="supermarket" name="supermarket">
+            <option value="dm">DM</option>
+            <option value="edeka">Edeka</option>
+        </select><br><br>
+
+        <label for="card_number">Kartennummer:</label>
+        <input type="text" id="card_number" name="card_number" required><br><br>
+
+        <label for="pin">PIN:</label>
+        <input type="text" id="pin" name="pin" required><br><br>
+
+        {% if captcha_required %}
+            <p>Bitte lösen Sie das folgende Captcha:</p>
+            <img src="{{ url_for('captcha_image') }}" alt="Captcha Image">
+            <br><br>
+            <label for="captcha_code">Captcha-Code:</label>
+            <input type="text" id="captcha_code" name="captcha_code" required>
+            <br><br>
+        {% endif %}
+
+        <input type="submit" value="Gutschein prüfen">
+    </form>
+
+    {% if result %}
+        <h2>Ergebnis:</h2>
+        <p>{{ result }}</p>
+    {% endif %}
+
+    {% if error %}
+        <h2>Fehler:</h2>
+        <p>{{ error }}</p>
+    {% endif %}
+</body>
+</html>
+
