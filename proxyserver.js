@@ -1,17 +1,25 @@
 import express from 'express';
 import axios from 'axios';
+import cors from 'cors';
 
 // Test
 //const axios = require('axios');
 const app = express();
 const port = 3000;
 
+// Configure CORS with specific allowed headers
+app.use(cors({
+    origin: 'http://localhost:8000',  // Allow only your frontend origin
+    methods: ['GET', 'POST'],  // Specify allowed methods if necessary
+    allowedHeaders: ['x-printed-credit-key', 'x-verification-code', 'Content-Type', 'Authorization']  // Add your custom header here
+}));
+
 app.get('/api/voucher', async (req, res) => {
     try {
-        console.log("Req0", req.headers)
-        console.log("Req0", req.headers['x-verification-code'])
-        // console.log("Req1", req.headers('x-verification-code'))
-        //console.log("req", req)
+        console.log(req.headers)
+        // console.log("Req0", req.headers['x-printed-credit-key'])
+        // console.log("Req0", req.headers['x-verification-code'])
+
         const response = await axios.get('https://dmpay-gateway.services.dmtech.com/checker/DE/credits', {
             headers: {
                 'x-printed-credit-key': req.headers['x-printed-credit-key'],
