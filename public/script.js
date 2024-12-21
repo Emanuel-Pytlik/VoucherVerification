@@ -1,61 +1,64 @@
-//import { response } from "express";
+// VARIABLE DEFINITIONS
+const btn = document.getElementById('btn');
+var inputText = document.getElementById('distance');
+
+const supermarkets = ['rewe', 'edeka', 'lidl', 'dm', 'aldi']
+const checkedBox = [false, false, false, false, false];
+
+var numberField = document.getElementById('number');
+var codeField = document.getElementById('code');
+var captchaField = document.getElementById('captcha');
+
+var result = document.getElementById("voucher-result")
+
+var value = null;
+var currency = null;
+var status = null;
+
+const resultsDict = new Object();
 
 //  FUNCTION DEFINITIONS
-function calculateTimes() { 
 
-    // Update template table with results
-    const template = document.getElementById('template').innerHTML;
-    const rendered = Mustache.render(template, resultsDict);
-    document.getElementById('target').innerHTML = rendered;
-  }
-
-
-function queryDM() {
-
+// Function to query the API
+async function queryDM(number, code) {
     const myHeaders = new Headers({
         'x-printed-credit-key': String(number),
         'x-verification-code': String(code)
     });
 
     const requestOptions = {
-    method: "GET",
-    headers: myHeaders,
-    redirect: "follow"
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow"
     };
 
-    fetch("http://localhost:3000/api/voucher", requestOptions)
-    .then((response) => {
-        if (!response.ok) {
-            throw new Error("Network response was not ok");
-        }
-        return response.json();  // Parse the response as JSON
-    })
-    .then((result) => {
-        // Display the result in the 'voucher-result' div
-        console.log(result);
-        resultsDict['status'] = result.status;
-        resultsDict['value'] = result.balance.value;
-        resultsDict['currency'] = result.balance.currency;
-
-        // Update template table with results
-        const template = document.getElementById('template').innerHTML;
-        const rendered = Mustache.render(template, resultsDict);
-        document.getElementById('target').innerHTML = rendered;
-
-    })
-    .catch((error) => {
-        console.error("Fetch error:", error);
-        result.innerText = "Error fetching voucher information.";
-    });
-
-    // fetch("http://localhost:3000/api/voucher", requestOptions)
-    // .then((response) => response.text())
-    // .then((result) => console.log(result))
-    // .catch((error) => console.error(error));
+    return fetch("http://localhost:3000/api/voucher", requestOptions)
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            return response.json(); // Parse the response as JSON
+        });
 }
 
+// Function to process the API result and update the frontend
+function processVoucherResult(result) {
 
-function buttonClick() {
+    console.log(result)
+
+    const resultsDict = {
+        status: result.status,
+        value: result.balance.value,
+        currency: result.balance.currency
+    };
+
+    // Update template table with results
+    const template = document.getElementById('template').innerHTML;
+    const rendered = Mustache.render(template, resultsDict);
+    document.getElementById('target').innerHTML = rendered;
+}
+
+async function buttonClick() {
 
     // Get the input values
     number = numberField.value;
@@ -79,35 +82,13 @@ function buttonClick() {
     }
 
     // Query the respective website
-    queryDM();
+    results = {}
+    if (checkedBox[3] == true) {
+        results = await queryDM(number, code);
+    }
 
-    // Run the calculation
-    calculateTimes();
+    processVoucherResult(results);
 }
-
-// VARIABLE DEFINITIONS
-const btn = document.getElementById('btn');
-var inputText = document.getElementById('distance');
-
-const supermarkets = ['rewe', 'edeka', 'lidl', 'dm', 'aldi']
-const checkedBox = [false, false, false, false, false];
-
-var numberField = document.getElementById('number');
-var codeField = document.getElementById('code');
-var captchaField = document.getElementById('captcha');
-
-var result = document.getElementById("voucher-result")
-
-var value = null;
-var currency = null;
-var status = null;
-
-const resultsDict = new Object();
-const speeds = [3.1, 18, 24, 19, 18, 10, 12, 18, 15, 16];
-const times = [999, 999, 999, 999, 999, 999, 999, 999, 999, 999];
-const ranges = [25, 7, 31, 18, 12, 13, 22, 15, 8, 15];
-const withinRange = ['Yes', 'Yes', 'Yes', 'Yes', 'Yes', 'Yes', 'Yes', 'Yes', 'Yes', 'Yes'];
-
 
 // SCRIPT
 btn.addEventListener('click', () => buttonClick());
